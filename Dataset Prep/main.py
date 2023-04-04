@@ -1,8 +1,8 @@
 import os
 import pandas as pd
-from PIL import Image
+from matplotlib import pyplot as plt
 import numpy as np
-
+import cv2
 # Set the directory path
 directory = 'data/'
 
@@ -26,10 +26,12 @@ for subdir in os.listdir(directory):
 
             # Only process image files
             if file.endswith('.jpg') or file.endswith('.jpeg') or file.endswith('.png'):
-                np_img = np.array(Image.open(file_path))
-                img_flatten = np_img.flatten()
-                reshape = img_flatten.reshape(1, img_flatten.shape[0])
-                data.append({'Folder': subdir, 'Image': reshape})
+                img = cv2.imread(file_path)
+                flatten_img = img.flatten()
+                np_img = np.array(flatten_img)
+                # reshape = img_flatten.reshape(1, img_flatten.shape[0])
+                # csv_string = ','.join([str(x) for x in flatten_img])
+                data.append({'Folder': subdir, 'Image': flatten_img})
 
 # Convert the data list to a pandas DataFrame
 df = pd.DataFrame(data)
